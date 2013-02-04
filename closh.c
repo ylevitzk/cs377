@@ -1,5 +1,5 @@
 // closh.c - CS 377, Spring 2013
-// YOUR NAME HERE
+// Gene Levitzky, Brian Dillmann
 
 #include <stdio.h>
 #include <unistd.h>
@@ -58,19 +58,17 @@ int main() {
     } while (timeout < 0 || timeout > 9);
     // end parsing code
     
-
-    ////////////////////////////////////////////////////////
-    //                                                    //
-    // TODO: use cmdTokens, count, parallel, and timeout  //
-    // to implement the rest of closh                     //
-    //                                                    //
-    // /////////////////////////////////////////////////////
-
-    // just executes the given command once - REPLACE THIS CODE WITH YOUR OWN
-    execvp(cmdTokens[0], cmdTokens); // replaces the current process with the given program
-    printf("Can't execute %s\n", cmdTokens[0]); // only reached if running the program failed
-    exit(1);
-
+	int id;	//  ID of the process
+	while (count--) { //  Execute count times, 0 == false
+		id = fork();
+		if (id != 0) { //  This is the parent process
+			waitpid(id, 0, 0); //  Wait for children to finish
+		} else { //  Must be the child process
+			execvp(cmdTokens[0], cmdTokens); // replaces the current process with the given program
+			printf("Can't execute %s\n", cmdTokens[0]); // only reached if running the program failed
+			exit(1);
+		}
+	}
   }
 }
 
