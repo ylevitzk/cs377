@@ -65,6 +65,8 @@ void executeInParallel (int count, char** cmdTokens) {
 
 	for(int i = 0; i < count; i++) {		
 		pthread_create(&threads[i], NULL, &threadFunction, &data); //	Create the threads
+	}
+	for(int i = 0; i < count; i++) {
 		pthread_join(threads[i], NULL);	//	Wait for them to finish before continuing. 
 	}
 }
